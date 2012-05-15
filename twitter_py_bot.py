@@ -1,13 +1,15 @@
 
-import twitter.api
+import twitter
 
-twitter_search = twitter.api.Twitter(domain="search.twitter.com")
+SEARCH_TERMS = ""
+
+def main():
+    t = twitter.Twitter(domain="search.twitter.com")
+    tweets = t.search(q="hockey")['results']
+
+    for tweet in tweets:
+        print tweet['text'] + "\n"
 
 
-
-s = twitter_search.search(q="hockey")
-
-for tweet in s['results']:
-    print tweet['text'] + "\n\n";
-
-#print s['results'][0]['text']
+if __name__ == "__main__":
+    main()
