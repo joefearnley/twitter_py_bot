@@ -1,30 +1,46 @@
-
-import twitter
-import oauth
+from twitter import Twitter
+from twitter import OAuth
 
 # OAuth information
-TOKEN = ""
-TOKEN_KEY = ""
-CONSUMER_SECRET = ""
+OAUTH_TOKEN = ""
+OAUTH_TOKEN_SECRET = ""
 CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
 
-# Search terms, seperated by comma
+# Supply the search terms. See the docs on the api search operators:
+# https://dev.twitter.com/docs/using-search
 SEARCH_TERMS = "foo,bar"
 
 def main():
-    auth = OAuth(TOKEN, TOKEN_KEY, SECRET, SECRET_KEY)
-    t = Twitter(auth)
-
-    # TODO: parse term string and use OR operator
-
+    t = authenticate()
+    tweets = t.statuses.user_timeline()
+    account_user_id = t.account.verify_credentials()['id']
     twitter_search = Twitter(domain="search.twitter.com")
     tweets = twitter_search.search(q=SEARCH_TERMS)['results']
 
     for tweet in tweets:
-        print tweet['text'] + "\n"
-        # check to see if are friends with the user
-        # if so, ignore,
-        # if not, follow
+        from_user_id = tweet['from_user_id']
+        is_following = (t.friendships.exists(user_id_a=account_user_id, user_id_b=from_user_id))
+        if is_following == False:
+            print "creating friendship between %s and %s " % (account_user_id, from_user_id)
+            t.friendships.create(user_id=from_user_id)
+
+    # print number of users following
+    friends = t.friends.ids()
+    number_of_friends = len(friends)
+    print "You are now following %s people on twitter." % number_of_friends
+
+def authenticate():
+    t = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
+    return t
+
+def unfollow_all():
+    """ Utility to unfollow all users """
+    t = authenticate()
+    friend_ids = t.friends.ids()["ids"]
+
+    for id in friend_ids:
+        t.friendships.destroy(user_id=id)
 
 if __name__ == "__main__":
     main()
