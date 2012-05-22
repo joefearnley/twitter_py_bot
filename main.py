@@ -9,7 +9,7 @@ CONSUMER_SECRET = ""
 
 # Supply the search terms. See the docs on the api search operators:
 #    https://dev.twitter.com/docs/using-search
-SEARCH_TERMS = ""
+SEARCH_TERMS = "foo,bar"
 
 def main():
     """Search the twitter timeline and befriend users."""
