@@ -8,10 +8,11 @@ CONSUMER_KEY = ""
 CONSUMER_SECRET = ""
 
 # Supply the search terms. See the docs on the api search operators:
-# https://dev.twitter.com/docs/using-search
-SEARCH_TERMS = "foo,bar"
+#    https://dev.twitter.com/docs/using-search
+SEARCH_TERMS = ""
 
 def main():
+    """Search the twitter timeline and befriend users."""
     t = authenticate()
     tweets = t.statuses.user_timeline()
     account_user_id = t.account.verify_credentials()['id']
@@ -26,16 +27,17 @@ def main():
             t.friendships.create(user_id=from_user_id)
 
     # print number of users following
-    friends = t.friends.ids()
+    friends = t.friends.ids()["ids"]
     number_of_friends = len(friends)
     print "You are now following %s people on twitter." % number_of_friends
 
 def authenticate():
+    """Authenticate to Twitter API using OAuth and return Twitter object."""
     t = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
     return t
 
 def unfollow_all():
-    """ Utility to unfollow all users """
+    """Utility to unfollow all users"""
     t = authenticate()
     friend_ids = t.friends.ids()["ids"]
 
