@@ -13,3 +13,9 @@ Then run the following:
 ####Dependencies
 * twitter 1.8.0 (http://pypi.python.org/pypi/twitter)
 * oauth 1.0.1 (http://pypi.python.org/pypi/oauth/1.0.1)
+
+####TODO
+* write unit tests for each function in the main class
+* rename main file
+* update README with correct usage
+
