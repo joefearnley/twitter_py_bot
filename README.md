@@ -1,4 +1,4 @@
-##TwitterPyBot
+##twitter_py_bot
 
 A twitter bot that befriends users based on given search terms.
 
